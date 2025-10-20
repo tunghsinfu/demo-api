@@ -1,0 +1,30 @@
+services:
+  demo-api:
+    build:
+      context: ./demo-api
+      dockerfile: Dockerfile
+    container_name: demo-api
+    ports:
+      - "18080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - spring-network
+    restart: unless-stopped
+
+  demo-excel:
+    build:
+      context: ./demo-excel
+      dockerfile: Dockerfile
+    container_name: demo-excel
+    ports:
+      - "18081:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - spring-network
+    restart: unless-stopped
+
+networks:
+  spring-network:
+    driver: bridge

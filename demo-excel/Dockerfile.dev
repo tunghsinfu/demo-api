@@ -1,0 +1,16 @@
+FROM eclipse-temurin:17-jdk-alpine
+
+# 安裝 Maven
+RUN apk add --no-cache maven
+
+WORKDIR /app
+
+# 複製 pom.xml 並下載依賴
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# 暴露端口
+EXPOSE 8080
+
+# 使用 Maven 直接運行，支援熱重載
+CMD ["mvn", "spring-boot:run", "-Dspring-boot.run.jvmArguments=-Dspring.devtools.restart.enabled=true"]

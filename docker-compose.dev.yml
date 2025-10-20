@@ -1,0 +1,44 @@
+services:
+  demo-api:
+    build:
+      context: ./demo-api
+      dockerfile: Dockerfile.dev
+    container_name: demo-api-dev
+    ports:
+      - "18080:8080"
+    volumes:
+      - ./demo-api:/app
+      - maven-cache-api:/root/.m2
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+      - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
+    networks:
+      - spring-network
+    restart: unless-stopped
+
+  demo-excel:
+    build:
+      context: ./demo-excel
+      dockerfile: Dockerfile.dev
+    container_name: demo-excel-dev
+    ports:
+      - "18081:8080"
+    volumes:
+      - ./demo-excel:/app
+      - maven-cache-excel:/root/.m2
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+      - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
+    networks:
+      - spring-network
+    restart: unless-stopped
+
+networks:
+  spring-network:
+    driver: bridge
+
+volumes:
+  maven-cache-api:
+  maven-cache-excel:
